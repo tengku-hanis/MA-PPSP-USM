@@ -1,5 +1,5 @@
-# MA-PPSP-USM
-Repo for webinar meta-analysis PPSP, USM
+# Systematic review and meta-analysis using RStudio
+Repo for meta-analysis workshop organized by Department of Medical Microbiology and Parasitology, School of Medical Sciences, USM
 
 This repo contains 2 files:
 
