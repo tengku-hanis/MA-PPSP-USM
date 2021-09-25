@@ -3,7 +3,7 @@
 
 iver <- 
   read.table(header = T, text = "
-             even.e n.e event.c n.c
+             event.e n.e event.c n.c
              3 82 4 82
              17 110 17 55
              0 42 0 20
