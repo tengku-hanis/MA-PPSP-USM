@@ -100,6 +100,7 @@ exp(ma_iver_reg$beta)
 ## Bubble plot of meta-regression
 bubble(ma_iver_reg, lwd = 2, lty = 2, col.line = "red", ylim = c(-3, 2), regline = TRUE)
 
+
 # REVISION (for fun) ----------------------------------------------
 library(ggplot2)
 
@@ -114,6 +115,7 @@ iver %>%
   labs(y = "Treatment effects (log odds ratio)", x = "Type of study") +
   theme_bw() + # Apply black and white theme
   theme(legend.position = "none") # Remove legend
+
 
 # MISCELLANEOUS -----------------------------------------------------------
 
