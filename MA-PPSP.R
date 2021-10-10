@@ -77,7 +77,7 @@ metabias(ma_iver_RE, plotit = T, method.bias = "peters")
 
 # EXTENSION ---------------------------------------------------------------
 
-# Subgroup analysis (k > 10)----
+# Subgroup analysis (k > 10) ----
 ma_sub <- update(ma_iver_RE3, byvar = study_type)
 ma_sub
 
