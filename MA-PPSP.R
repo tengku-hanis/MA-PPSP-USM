@@ -146,4 +146,5 @@ rob_summary(bias, tool = "ROB1", overall = F, weighted = F)
 # https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/
 # https://www.metafor-project.org/  
 # https://mcguinlu.shinyapps.io/robvis/
+# Rtools - https://clanfear.github.io/CSSS508/docs/compiling.html
 
