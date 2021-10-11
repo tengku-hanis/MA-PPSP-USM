@@ -61,6 +61,8 @@ ma_inf <- InfluenceAnalysis(ma_iver_RE2, random = T)
 
 plot(ma_inf, "baujat")
 plot(ma_inf, "influence")
+plot(ma_inf, "ES")
+plot(ma_inf, "I2")
 
 # Update final model ----
 ma_iver_RE3 <- update(ma_iver_RE, comb.fixed = F, subset = -c(17, 27))
