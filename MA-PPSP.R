@@ -80,7 +80,7 @@ metabias(ma_iver_RE, plotit = T, method.bias = "peters")
 # EXTENSION-1 -------------------------------------------------------------
 # For significant publication bias
 
-# Trim and fill method (I^2 should be low)
+# Trim and fill method (I^2 should be low) ----
 tf <- trimfill.meta(ma_iver_RE3)
 tf
 
