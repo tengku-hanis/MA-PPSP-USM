@@ -47,12 +47,12 @@ forest(ma_iver_RE, sortvar = TE)
 funnel(ma_iver_RE, studlab = T)
 
 # Publication bias ----
-metabias(ma_iver_RE, plotit = T, method.bias = "Egger") # generic
-metabias(ma_iver_RE, plotit = T, method.bias = "Begg") # generic
-metabias(ma_iver_RE, plotit = T, method.bias = "Peters") # Specific for binary outcome
+metabias(ma_iver_RE, plotit = T, method.bias = "Egger") #generic
+metabias(ma_iver_RE, plotit = T, method.bias = "Begg") #generic
+metabias(ma_iver_RE, plotit = T, method.bias = "Peters") #specific for binary outcome
 
 # Assess outlier (I^2 > 50%) ----
-ma_iver_RE2 <- update(ma_iver_RE, subset = -c(3, 6:8, 21, 22)) # cannot have NAs for this
+ma_iver_RE2 <- update(ma_iver_RE, subset = -c(3, 6:8, 21, 22)) #cannot have NAs for this
 
 find.outliers(ma_iver_RE2)
 
@@ -123,11 +123,11 @@ iver %>%
   mutate(weights = ma_iver_RE3$w.random, 
          effect = ma_iver_RE3$TE) %>% 
   ggplot(aes(x = study_type, y = effect, size = weights)) +
-  geom_point(shape = 1) + # Add scatter
-  geom_abline(intercept = ma_iver_reg$b[1], slope = ma_iver_reg$b[2], linetype = "dashed") + # Add regression line
+  geom_point(shape = 1) + #add scatter
+  geom_abline(intercept = ma_iver_reg$b[1], slope = ma_iver_reg$b[2], linetype = "dashed") + #add regression line
   labs(y = "Treatment effects (log odds ratio)", x = "Type of study") +
-  theme_bw() + # Apply black and white theme
-  theme(legend.position = "none") # Remove legend
+  theme_bw() + #apply black and white theme
+  theme(legend.position = "none") #remove legend
 
 
 # MISCELLANEOUS -----------------------------------------------------------
