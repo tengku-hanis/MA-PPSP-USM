@@ -1,6 +1,6 @@
 #========================================================================#
 # Title: Example of meta-analysis in R
-# Author: Tengku Hanis
+# Author: Tengku Hanis (https://tengkuhanis.netlify.app/)
 # Date: 18-10-2021
 #========================================================================#
 
