@@ -30,15 +30,15 @@ ma_iver <- metabin(event.e = event.e,
                    data = iver,
                    method.tau = "PM", #estimator
                    sm = "OR",
-                   comb.fixed = T, 
-                   comb.random = T,
+                   fixed = T, 
+                   random = T,
                    prediction = T, 
                    hakn = T, #reduce false positive
                    adhoc.hakn = "iqwig6") #adjust the possible narrow ci caused by hakn
 ma_iver
 
 ## Update chosen model
-ma_iver_RE <- update(ma_iver, comb.fixed = F)
+ma_iver_RE <- update(ma_iver, fixed = F)
 
 # Forest plot ----
 forest(ma_iver_RE, sortvar = TE)
@@ -52,12 +52,14 @@ metabias(ma_iver_RE, plotit = T, method.bias = "Begg") #generic
 metabias(ma_iver_RE, plotit = T, method.bias = "Peters") #specific for binary outcome
 
 # Assess outlier (I^2 > 50%) ----
-ma_iver_RE2 <- update(ma_iver_RE, subset = -c(3, 6:8, 21, 22)) #cannot have NAs for this
+ma_no_NAs <- update(ma_iver_RE, subset = -c(3, 6:8, 21, 22)) #cannot have NAs for this
 
-find.outliers(ma_iver_RE2)
+find.outliers(ma_no_NAs)
 
 # Influential diagnostics ----
-ma_inf <- InfluenceAnalysis(ma_iver_RE2, random = T)
+baujat(ma_iver_RE)
+
+ma_inf <- InfluenceAnalysis(ma_no_NAs, random = T) #better
 
 plot(ma_inf, "baujat")
 plot(ma_inf, "influence")
@@ -65,23 +67,23 @@ plot(ma_inf, "ES")
 plot(ma_inf, "I2")
 
 # Update final model ----
-ma_iver_RE3 <- update(ma_iver_RE, comb.fixed = F, subset = -c(17, 27))
+ma_iver_RE2 <- update(ma_iver_RE, fixed = F, subset = -c(17, 27))
 
 ## Rerun everything from the beginning
-forest(ma_iver_RE3, sortvar = TE)
+forest(ma_iver_RE2, sortvar = TE)
 
-funnel(ma_iver_RE3, studlab = T)
+funnel(ma_iver_RE2, studlab = T)
 
-metabias(ma_iver_RE, plotit = T, method.bias = "Egger")
-metabias(ma_iver_RE, plotit = T, method.bias = "Begg")
-metabias(ma_iver_RE, plotit = T, method.bias = "peters")
+metabias(ma_iver_RE2, plotit = T, method.bias = "Egger")
+metabias(ma_iver_RE2, plotit = T, method.bias = "Begg")
+metabias(ma_iver_RE2, plotit = T, method.bias = "peters")
 
 
 # 2) EXTENSION-1 -------------------------------------------------------------
-# For significant publication bias
+# For significant publication bias (our model not significant)
 
 # Trim and fill method (I^2 should be low) ----
-tf <- trimfill.meta(ma_iver_RE3)
+tf <- trimfill(ma_iver_RE2)
 tf
 
 funnel(tf, studlab = T)
@@ -91,24 +93,18 @@ funnel(tf, studlab = T)
 # To explain high heterogeneity (noted that our I^2 is low)
 
 # Subgroup analysis (k > 10) ----
-ma_sub <- update(ma_iver_RE3, byvar = study_type)
+ma_sub <- update(ma_iver_RE2, subgroup = study_type)
 ma_sub
 
 forest(ma_sub, sortvar = TE, bylab = "Type of study")
 
 # Meta-regression (~ k > 10) ----
-ma_iver_reg <- metareg(ma_iver_RE3, ~ study_type, 
+ma_iver_reg <- metareg(ma_iver_RE, ~ study_type, 
                        hakn = T, 
-                       method.tau = "REML", intercept = T) #try change to FALSE
+                       method.tau = "REML", intercept = T) 
 
 ma_iver_reg 
-exp(ma_iver_reg$beta)
-
-# intrcpt               0.6308677
-# study_typenonClinical 0.8217791
-#--- intercept = F
-# study_typeclinical    0.6308677
-# study_typenonClinical 0.5184339
+exp(ma_iver_reg$beta) #effect estimate of nonClinical is 1.2 or 20% higher than the clinical
 
 ## Bubble plot of meta-regression
 bubble(ma_iver_reg, lwd = 2, lty = 2, col.line = "red", ylim = c(-3, 2), regline = TRUE)
@@ -120,11 +116,11 @@ library(ggplot2)
 # Bubble plot (manually using ggplot)
 iver %>% 
   slice(-c(17,27)) %>% 
-  mutate(weights = ma_iver_RE3$w.random, 
-         effect = ma_iver_RE3$TE) %>% 
+  mutate(weights = ma_iver_RE2$w.random, 
+         effect = ma_iver_RE2$TE) %>% 
   ggplot(aes(x = study_type, y = effect, size = weights)) +
   geom_point(shape = 1) + #add scatter
-  geom_abline(intercept = ma_iver_reg$b[1], slope = ma_iver_reg$b[2], linetype = "dashed") + #add regression line
+  geom_abline(intercept = ma_iver_reg$b[1], slope = ma_iver_reg$b[2], linetype = "dashed", color = "red") + #add regression line
   labs(y = "Treatment effects (log odds ratio)", x = "Type of study") +
   theme_bw() + #apply black and white theme
   theme(legend.position = "none") #remove legend
@@ -146,7 +142,7 @@ bias$Weight <- 1
 ## Plot
 rob_traffic_light(bias, tool = "ROB1", psize = 13)
 
-rob_summary(bias, tool = "ROB1", overall = F, weighted = F)
+rob_summary(bias, tool = "ROB1", overall = F, weighted = F) #data_rob2
 
 # Prisma flow of diagram ----
 
