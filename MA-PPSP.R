@@ -4,7 +4,7 @@
 # Date: 18-10-2021
 #========================================================================#
 
-# EXAMPLE -----------------------------------------------------------------
+# 1) EXAMPLE -----------------------------------------------------------------
 
 # Install packages
 install.packages("meta")
@@ -23,18 +23,18 @@ head(iver)
 
 # Fixed and random effect model ----
 ma_iver <- metabin(event.e = event.e, 
-              n.e = n.e,
-              event.c = event.c,
-              n.c = n.c, 
-              studlab = studyID,
-              data = iver,
-              method.tau = "PM", #estimator
-              sm = "OR",
-              comb.fixed = T, 
-              comb.random = T,
-              prediction = T, 
-              hakn = T, #reduce false positive
-              adhoc.hakn = "iqwig6") #adjust the possible narrow ci caused by hakn
+                   n.e = n.e,
+                   event.c = event.c,
+                   n.c = n.c, 
+                   studlab = studyID,
+                   data = iver,
+                   method.tau = "PM", #estimator
+                   sm = "OR",
+                   comb.fixed = T, 
+                   comb.random = T,
+                   prediction = T, 
+                   hakn = T, #reduce false positive
+                   adhoc.hakn = "iqwig6") #adjust the possible narrow ci caused by hakn
 ma_iver
 
 ## Update chosen model
@@ -77,7 +77,7 @@ metabias(ma_iver_RE, plotit = T, method.bias = "Begg")
 metabias(ma_iver_RE, plotit = T, method.bias = "peters")
 
 
-# EXTENSION-1 -------------------------------------------------------------
+# 2) EXTENSION-1 -------------------------------------------------------------
 # For significant publication bias
 
 # Trim and fill method (I^2 should be low) ----
@@ -87,7 +87,7 @@ tf
 funnel(tf, studlab = T)
 
 
-# EXTENSION-2 -------------------------------------------------------------
+# 3) EXTENSION-2 -------------------------------------------------------------
 # To explain high heterogeneity (noted that our I^2 is low)
 
 # Subgroup analysis (k > 10) ----
@@ -114,7 +114,7 @@ exp(ma_iver_reg$beta)
 bubble(ma_iver_reg, lwd = 2, lty = 2, col.line = "red", ylim = c(-3, 2), regline = TRUE)
 
 
-# REVISION (for fun) ----------------------------------------------
+# 4) REVISION (for fun) ----------------------------------------------
 library(ggplot2)
 
 # Bubble plot (manually using ggplot)
@@ -130,7 +130,7 @@ iver %>%
   theme(legend.position = "none") #remove legend
 
 
-# MISCELLANEOUS -----------------------------------------------------------
+# 5) MISCELLANEOUS -----------------------------------------------------------
 
 # Risk of bias ----
 library(robvis)
